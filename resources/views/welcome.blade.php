@@ -74,6 +74,7 @@
                 <div class="links">
                     <a href="/orders">FORMULARIO COMPRA</a>
                     <a href="/pagos-list">PAGOS</a>
+                    <a href="/shoppingcart">CARRITO DE COMPRA</a>
                     <a href="https://github.com/villago89/Evertec">GitHub</a>
                 </div>
             </div>

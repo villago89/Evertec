@@ -5,7 +5,9 @@
 
 <div id="failureMessage"></div>
 
-<form action="/crearOrder" id="frmPagos" method="post" data-role="ajax-request" data-title="Transacción" data-id="CREA_TRAN">
+<form action="/crearOrder" id="frmPagos" method="post" data-role="ajax-request" data-title="Transacción" data-id="CREA_TRAN"
+onsubmit="$('#md-request').modal()" data-response="#md-request .modal-body">
+
     @csrf
 
     <fieldset>
@@ -52,24 +54,8 @@
         <div class="modal-body">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearInterval(redirectionInterval);">Cancelar</button>
-          <button type="button" class="btn btn-primary" onclick="
-              $('#timer').show();
-              $('#timer-desc').show();
-              var num = 5;
-              redirectionInterval = setInterval(function(){
-                  if (num == 0)
-                      $('#timer').text('...');
-                  else
-                      $('#timer').text(num.toString());
-                  num--;
-                  if (num < 0)
-                      clearInterval(redirectionInterval);
-              }, 1000);
-              setTimeout(function(){
-                  window.location = $('#timer-desc').attr('data-ref');
-              }, num * 1000);
-          ">Aceptar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location = ('/orders')">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="window.location = ('/shoppingcart')">Aceptar</button>
         </div>
       </div>
     </div>

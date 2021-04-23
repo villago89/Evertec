@@ -13,11 +13,12 @@
             <tr>
                 <th>Fecha y hora</th>
                 <th>Referencia</th>
-                <th>Autorización/CUS</th>
-                <th>Estado</th>
+                <th>Nombre Cliente</th>
+                <th>Email</th>
                 <th>Valor</th>
+                <th>Mensaje</th>
                 <th>Estado</th>
-                <th>Detalle</th>
+                <th>Acción</th>
             </tr>
         </thead>
         <tbody>
@@ -28,11 +29,18 @@
                     <td>{{ $request->customer_name }}</td>
                     <td>{{ $request->customer_email }}</td>
                     <td>{{ number_format($request->amount, 2) }}</td>
-                    <td>{{ $request->status }}</td>
+                    <td>{{ $request->payment_message }}</td>
+                    <td>{{ $request->getStatusDetail() }}</td>
                     <td>
-                        <a href="{{ url('/confirmacion') .'/'. $request->id }}" class="btn btn-primary btn-sm">
-                            Ver confirmación
+                        @if($request->status == 'REJECTED')
+                        <a onclick="{{ 'crearTransaccion('.$request->id.')' }}" class="btn btn-primary btn-sm">
+                            Pagar 
                         </a>
+                        @else
+                            <a href="{{ url('/confirmacion') .'/'. $request->id }}" class="btn btn-primary btn-sm">
+                                Ver confirmación
+                            </a>
+                        @endif
                     </td>
                 </tr>
             @endforeach
@@ -47,3 +55,17 @@
 <?php endif; ?>
 
 @endsection('content')
+@section('js')
+<script type="text/javascript">
+    function crearTransaccion(id) {
+        $.ajax({
+            type: "get",
+            url: "/crearTransaccion/" + id,
+            success: function (response) {
+                $('#md-request').modal();
+                $(".modal-body").html(response);
+            }
+        });
+    }
+</script>
+@endsection

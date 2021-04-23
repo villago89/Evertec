@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\orders;
 use App\products;
 use Illuminate\Http\Request;
+use DB;
+
 
 class ordersController extends Controller
 {
@@ -19,34 +21,39 @@ class ordersController extends Controller
     }
 
     public function crearOrder(Request $request){
-        var_dump(23);
-        DB::beginTransaction();
-        $order = new orders();
-        $order->customer_name = $request->customer_name;
-        $order->customer_email = $request->customer_email;
-        $order->customer_mobile = $request->customer_mobile;
-        $order->product_id = $request->product_id;
-        $order->amount = $request->amount;
-        $order->ipAddress = \Request::ip();
-        $order->status = "CREATED";
-        $order->save();
-        $reference = $order->id;
-        DB::commit();
-        return view('orders/shoppingcart', compact('requests'));
+        try{
+            DB::beginTransaction();
+            $order = new orders();
+            $order->customer_name = $request->customer_name;
+            $order->customer_email = $request->customer_email;
+            $order->customer_mobile = $request->customer_mobile;
+            $order->product_id = $request->product_id;
+            $order->amount = $request->amount;
+            $order->ipAddress = \Request::ip();
+            $order->status = "CREATED";
+            $order->save();
+            DB::commit();
+            $message = "ORDEN DE COMPRA No. $order->id CREADO CON ÉXITO, DESEA IR AL CARRITO DE COMPRA ?";
+            return $message;
+        }catch (\Exception $e){
+            DB::rollback();
+            $message = $e->getMessage();
+            return view('orders/error', compact('message'));
+        }
     }
 
     public function list()
     {
-        //$qb = orders::where('status','<>','CREATED')->orderBy('id','desc')->get();
-        $qb = orders::orderBy('id','desc')->get();
-        $requests = $qb;
+        $requests = orders::where('payment_status','<>',NULL)
+        ->orderBy('id','desc')->get();
         return view('orders/list', compact('requests'));
     }
 
     public function shoppingcart()
     {
-        $qb = orders::where('status','CREATED')->with('product')->get();
-        $requests = $qb;
+        $requests = orders::where('status','CREATED')
+        ->where('payment_status',NULL)
+        ->with('product')->get();
         return view('orders/shoppingcart', compact('requests'));
     }
 

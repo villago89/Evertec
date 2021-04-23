@@ -11,4 +11,12 @@ class orders extends Model
     {
        return $this->belongsTo(Products::class, 'product_id', 'id');
     }
+
+    public function getStatusDetail(){
+        switch($this->status){
+            case 'CREATED': return "CREADO";
+            case 'PAYED': return "PAGADO";
+            case 'REJECTED': return "RECHAZADO";
+        }
+    }
 }

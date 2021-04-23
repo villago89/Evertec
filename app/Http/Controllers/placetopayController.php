@@ -22,14 +22,12 @@ class placetopayController extends Controller
             $tranKey = \Config::get('placetopay.P2P_TRANKEY');
             $endPoint = \Config::get('placetopay.P2P_ENDPOINT');
 
-           
             $placetopay = new \Dnetix\Redirection\PlacetoPay([
                 'login' => $login ,
                 'tranKey' => $tranKey,
                 'url' => $endPoint,
             ]);
 
-            
             $request_placetopay = [
                 'locale' => 'es_CO',
                 'buyer' => [
@@ -66,6 +64,10 @@ class placetopayController extends Controller
             $response = $placetopay->request($request_placetopay);
             if ($response->isSuccessful()) {
                 $order->requestId = $response->requestId();
+                $order->payment_status = $response->status()->status();
+                $order->payment_reason = $response->status()->reason();
+                $order->payment_message = $response->status()->message();
+                $order->payment_date = $response->status()->date();
                 $order->update();
                 $processUrl = $response->processUrl();
                 DB::commit();
@@ -88,10 +90,7 @@ class placetopayController extends Controller
             $login = \Config::get('placetopay.P2P_LOGIN');
             $tranKey = \Config::get('placetopay.P2P_TRANKEY');
             $endPoint = \Config::get('placetopay.P2P_ENDPOINT');
-           // $endPoint = "https://dev.placetopay.com/redirection";
-            //$endPoint = "https://test.placetopay.com/redirection";
-            //return $endPoint;
-           
+   
           
             $placetopay = new \Dnetix\Redirection\PlacetoPay([
                 'login' => $login ,
@@ -99,15 +98,9 @@ class placetopayController extends Controller
                 'url' => $endPoint,
             ]);
             
-            
             $response = $placetopay->query($order->requestId);
             if(isset($response->toArray()['payment'][0]['status'])){
                 $payment = $response->toArray()['payment'][0]['status'];
-                if($payment['status'] == 'APPROVED'){
-                    $order->status = 'PAYED';
-                }else{
-                    $order->status = 'REJECTED';
-                }
                 $order->payment_status = $payment['status'];
                 $order->payment_reason = $payment['reason'];
                 $order->payment_message = $payment['message'];
@@ -115,17 +108,23 @@ class placetopayController extends Controller
                 $order->payment_reference = $response->toArray()['payment'][0]['reference'];
                 $order->payment_authorization = $response->toArray()['payment'][0]['authorization'];
             }else{
-                $order->payment_status = $response->toArray()['status']['status'];
+                $payment = $response->toArray()['status'];
+                $order->payment_status = $payment['status'];
+                $order->payment_reason = $payment['reason'];
+                $order->payment_message = $payment['message'];
+                $order->payment_date = $payment['date'];
+            }
+            if($payment['status'] == 'APPROVED'){
+                $order->status = 'PAYED';
+            }else{
+                $order->status = 'REJECTED';
             }
             $order->update();
             
             if (!$response->isSuccessful()) {
-                 // There was some error with the connection so check the message
                 print_r($response->status()->message() . "\n");
             }
             return view('orders/pagos-confirmacion', compact('order'));
-
-        
         }catch (\Exception $e){
                 $message = $e->getMessage();
                 return view('orders/error', compact('message'));

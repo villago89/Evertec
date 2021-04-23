@@ -59,5 +59,41 @@
     <script src="/js/fasterjs.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @yield('js') 
+    <div class="modal" tabindex="-1" role="dialog" id="md-request">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Términos de la plataforma</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        onclick="clearInterval(redirectionInterval);">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="
+                        $('#timer').show();
+                        $('#timer-desc').show();
+                        var num = 5;
+                        redirectionInterval = setInterval(function(){
+                            if (num == 0)
+                                $('#timer').text('...');
+                            else
+                                $('#timer').text(num.toString());
+                            num--;
+                            if (num < 0)
+                                clearInterval(redirectionInterval);
+                        }, 1000);
+                        setTimeout(function(){
+                            window.location = $('#timer-desc').attr('data-ref');
+                        }, num * 1000);
+                    ">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
