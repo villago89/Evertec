@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tienda Virtual')
+@section('title', 'Formulario compra')
 @section('content')
 <h2><i class="fas fa-shopping-cart"></i> Formulario de compra</h2>
 

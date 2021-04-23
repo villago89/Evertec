@@ -116,7 +116,7 @@ class placetopayController extends Controller
             }
             if($payment['status'] == 'APPROVED'){
                 $order->status = 'PAYED';
-            }else{
+            }elseif($payment['status'] == 'REJECTED'){
                 $order->status = 'REJECTED';
             }
             $order->update();

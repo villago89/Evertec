@@ -40,7 +40,7 @@
                         <a class="nav-link" href="<?= url('/orders') ?>">Formulario Compra</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= url('/pagos-list') ?>">Pagos</a>
+                        <a class="nav-link" href="<?= url('/pagos-list') ?>">Pagos/Ordenes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= url('/shoppingcart') ?>">Carrito Compra</a>

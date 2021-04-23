@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h2><i class="fas fa-clipboard-list"></i> Últimos pagos realizados</h2>
+<h2><i class="fas fa-clipboard-list"></i> Últimos pagos/ordenes realizados</h2>
 
 <?php if (count($requests)): ?>
 
@@ -31,13 +31,13 @@
                     <td>{{ number_format($request->amount, 2) }}</td>
                     <td>{{ $request->payment_message }}</td>
                     <td>{{ $request->getStatusDetail() }}</td>
-                    <td>
+                    <td class="text-center">
                         @if($request->status == 'REJECTED')
-                        <a onclick="{{ 'crearTransaccion('.$request->id.')' }}" class="btn btn-primary btn-sm">
-                            Pagar 
-                        </a>
+                            <a onclick="{{'crearTransaccion('.$request->id.')'}}" class="btn btn-primary btn-sm text-white">
+                                Pagar 
+                            </a>
                         @else
-                            <a href="{{ url('/confirmacion') .'/'. $request->id }}" class="btn btn-primary btn-sm">
+                            <a href="{{ url('/confirmacion') .'/'. $request->id }}" class="btn btn-primary btn-sm text-white">
                                 Ver confirmación
                             </a>
                         @endif

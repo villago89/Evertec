@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Prueba Jesus Villalba</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -73,7 +73,7 @@
 
                 <div class="links">
                     <a href="/orders">FORMULARIO COMPRA</a>
-                    <a href="/pagos-list">PAGOS</a>
+                    <a href="/pagos-list">PAGOS/ORDENES</a>
                     <a href="/shoppingcart">CARRITO DE COMPRA</a>
                     <a href="https://github.com/villago89/Evertec">GitHub</a>
                 </div>

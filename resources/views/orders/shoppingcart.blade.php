@@ -27,8 +27,8 @@
             <td>{{ $request->customer_email }}</td>
             <td>{{ $request->product->descriptions }}</td>
             <td>{{ number_format($request->amount, 2) }}</td>
-            <td>
-                <a onclick="{{ 'crearTransaccion('.$request->id.')' }}" class="btn btn-primary btn-sm">
+            <td  class="text-center">
+                <a onclick="{{ 'crearTransaccion('.$request->id.')' }}" class="btn btn-primary btn-sm text-white">
                     PAGAR
                 </a>
             </td>
@@ -58,6 +58,5 @@
             }
         });
     }
-
 </script>
 @endsection
